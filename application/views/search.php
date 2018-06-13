@@ -34,7 +34,11 @@
     $(document).ready(function () {
 
         function boldString(str, find){
-            var regex = new RegExp(find, 'g');
+            var regex = new RegExp(find, 'gi');
+            var tymps = regex.exec(str);
+            if(tymps != null){
+                find = tymps[0];
+            }
             return str.replace(regex, '<b>'+find+'</b>');
         }
 
@@ -42,6 +46,8 @@
             source: function (query, result) {
 
                 var input = $('#autocomplete').val();
+                $('.pac-container').css('display','block');
+                $('.pac-logo:after').css('display','block');
                 $('#places_list').html('<h3>Location</h3>');
 
                 $.ajax({
@@ -77,6 +83,8 @@
             if ($(this).val() == '') {
                 $('#hotel_list').html('');
                 $('#places_list').html('');
+                $('.pac-container').css('display','none!important');
+                $('.pac-logo:after').css('display','none!important');
             }
         });
     });
