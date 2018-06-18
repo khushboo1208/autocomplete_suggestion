@@ -53,7 +53,7 @@ table{
 }
 .pac-container {
   top: 155px!important;
-  /*display: block!important;*/
+  display: block!important;
 }
 
 .font-weight-700 {
