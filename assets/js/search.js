@@ -15,6 +15,11 @@ $(document).ready(function () {
         return str.replace(regex, '<b>'+find+'</b>');
     }
 
+    $('#autocomplete').focus(function() {
+        $('#hotel_list').css('display','block');
+        $('#places_list').css('display','block');
+    });
+
     $('#autocomplete').typeahead({
         source: function (query, result) {
 
@@ -24,7 +29,7 @@ $(document).ready(function () {
             $('#places_list').html('<h3>Location</h3>');
 
             $.ajax({
-                url: "<?php echo $this->config->item('base_url').'welcome'; ?>",
+                url: '/welcome',
                 type: 'POST',
                 data : {'string' : input},
                 success: function(response){
@@ -59,5 +64,10 @@ $(document).ready(function () {
             $('.pac-container').css('display','none!important');
             $('.pac-logo:after').css('display','none!important');
         }
+    });
+
+    $('#autocomplete').blur(function() {
+        $('#hotel_list').css('display','none');
+        $('#places_list').css('display','none');
     });
 });
