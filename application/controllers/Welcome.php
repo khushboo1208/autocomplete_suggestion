@@ -20,34 +20,6 @@ class Welcome extends CI_Controller {
      */
     public function index()
     {
-        if($this->input->is_ajax_request()) {
-            $string = $this->input->post('string');
-            if(!empty($string)) {
-                $this->load->model('hotel');
-                $response = $this->hotel->getHotels($string);
-                if(empty($response)) {
-                    $data = array(
-                        'success' => false,
-                        'message' => 'No response'
-                    );
-                }
-                else {
-                    $data = array(
-                        'success' => true,
-                        'list' => $response
-                    );
-                }
-                $this->output->set_content_type('application/json')->set_output(json_encode($data));
-            }
-            else {
-                $this->output->set_output(json_encode(array(
-                    'success' => false,
-                    'message' => 'No input'
-                )));
-            }
-        }
-        else {
-            $this->load->view('search');
-        }
+        $this->load->view('search');
     }
 }

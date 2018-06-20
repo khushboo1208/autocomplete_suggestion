@@ -69,7 +69,7 @@ abstract class Rest extends CI_Controller
      * The insert_id of the log entry (if we have one)
      *
      * @var string
-    */
+     */
     protected $_insert_id           = '';
     /**
      * The arguments for the PUT request method
@@ -123,19 +123,19 @@ abstract class Rest extends CI_Controller
      * The LDAP Distinguished Name of the User post authentication
      *
      * @var string
-    */
+     */
     protected $_user_ldap_dn        = '';
     /**
      * The start of the response time from the server
      *
      * @var string
-    */
+     */
     protected $_start_rtime         = '';
     /**
      * The end of the response time from the server
      *
      * @var string
-    */
+     */
     protected $_end_rtime           = '';
     /**
      * List all supported methods, the first will be the default format
@@ -244,7 +244,7 @@ abstract class Rest extends CI_Controller
         // _auth_override_check could exit so we need $this->rest->db initialized before
         $this->auth_override    = $this->_auth_override_check();
         // Checking for keys? GET TO WorK!
-	      // Skip keys test for $config['auth_override_class_method']['class'['method'] = 'none'
+        // Skip keys test for $config['auth_override_class_method']['class'['method'] = 'none'
         if (config_item('rest_enable_keys') && $this->auth_override !== TRUE) {
             $this->_allow = $this->_detect_api_key();
         }
@@ -461,9 +461,9 @@ abstract class Rest extends CI_Controller
      */
     protected function _detect_ssl()
     {
-    	    // $_SERVER['HTTPS'] (http://php.net/manual/en/reserved.variables.server.php)
-    	    // Set to a non-empty value if the script was queried through the HTTPS protocol
-            return (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']));
+        // $_SERVER['HTTPS'] (http://php.net/manual/en/reserved.variables.server.php)
+        // Set to a non-empty value if the script was queried through the HTTPS protocol
+        return (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']));
     }
     /**
      * Return server response
@@ -476,10 +476,10 @@ abstract class Rest extends CI_Controller
     protected function _server_error_response($ex)
     {
         $response = [
-                config_item('rest_status_field_name') => FALSE,
-                config_item('rest_message_field_name') => [
-                        'classname' => get_class($ex), 'message' => $ex->getMessage()
-                ]
+            config_item('rest_status_field_name') => FALSE,
+            config_item('rest_message_field_name') => [
+                'classname' => get_class($ex), 'message' => $ex->getMessage()
+            ]
         ];
         $this->response($response, 500);
     }
@@ -523,7 +523,7 @@ abstract class Rest extends CI_Controller
         }
         // Check if a file extension is used
         elseif ($this->_get_args && !is_array(end($this->_get_args)) && preg_match($pattern, end($this->_get_args), $matches)) {
-        //elseif ($this->_get_args and !is_array(end($this->_get_args)) and preg_match($pattern, end(array_keys($this->_get_args)), $matches)) {
+            //elseif ($this->_get_args and !is_array(end($this->_get_args)) and preg_match($pattern, end(array_keys($this->_get_args)), $matches)) {
             // The key of the last argument
             $arg_keys = array_keys($this->_get_args);
             $last_key = end($arg_keys);
@@ -685,14 +685,14 @@ abstract class Rest extends CI_Controller
     protected function _log_request($authorized = FALSE)
     {
         $status = $this->rest->db->insert(config_item('rest_logs_table'), [
-                    'uri' => $this->uri->uri_string(),
-                    'method' => $this->request->method,
-                    'params' => $this->_args ? (config_item('rest_logs_json_params') ? json_encode($this->_args) : serialize($this->_args)) : NULL,
-                    'api_key' => isset($this->rest->key) ? $this->rest->key : '',
-                    'ip_address' => $this->input->ip_address(),
-                    'time' => function_exists('now') ? now() : time(),
-                    'authorized' => $authorized
-                ]);
+            'uri' => $this->uri->uri_string(),
+            'method' => $this->request->method,
+            'params' => $this->_args ? (config_item('rest_logs_json_params') ? json_encode($this->_args) : serialize($this->_args)) : NULL,
+            'api_key' => isset($this->rest->key) ? $this->rest->key : '',
+            'ip_address' => $this->input->ip_address(),
+            'time' => function_exists('now') ? now() : time(),
+            'authorized' => $authorized
+        ]);
         $this->_insert_id = $this->rest->db->insert_id();
         return $status;
     }
@@ -716,10 +716,10 @@ abstract class Rest extends CI_Controller
         $limit = $this->methods[$controller_method]['limit'];
         // Get data on a keys usage
         $result = $this->rest->db
-                ->where('uri', $this->uri->uri_string())
-                ->where('api_key', $this->rest->key)
-                ->get(config_item('rest_limits_table'))
-                ->row();
+            ->where('uri', $this->uri->uri_string())
+            ->where('api_key', $this->rest->key)
+            ->get(config_item('rest_limits_table'))
+            ->row();
         // No calls yet for this key
         if ( ! $result ) {
             // Right, set one up from scratch
@@ -734,11 +734,11 @@ abstract class Rest extends CI_Controller
         elseif ($result->hour_started < time() - (60 * 60)) {
             // Reset the started period
             $this->rest->db
-                    ->where('uri', $this->uri->uri_string())
-                    ->where('api_key', isset($this->rest->key) ? $this->rest->key : '')
-                    ->set('hour_started', time())
-                    ->set('count', 1)
-                    ->update(config_item('rest_limits_table'));
+                ->where('uri', $this->uri->uri_string())
+                ->where('api_key', isset($this->rest->key) ? $this->rest->key : '')
+                ->set('hour_started', time())
+                ->set('count', 1)
+                ->update(config_item('rest_limits_table'));
         }
         // They have called within the hour, so lets update
         else {
@@ -747,10 +747,10 @@ abstract class Rest extends CI_Controller
                 return FALSE;
             }
             $this->rest->db
-                    ->where('uri', $this->uri->uri_string())
-                    ->where('api_key', $this->rest->key)
-                    ->set('count', 'count + 1', FALSE)
-                    ->update(config_item('rest_limits_table'));
+                ->where('uri', $this->uri->uri_string())
+                ->where('api_key', $this->rest->key)
+                ->set('count', 'count + 1', FALSE)
+                ->update(config_item('rest_limits_table'));
         }
         return TRUE;
     }
@@ -1080,7 +1080,7 @@ abstract class Rest extends CI_Controller
             'rdn'     => $this->config->item('binduser', 'ldap'),
             'pass'    => $this->config->item('bindpw', 'ldap'),
             'basedn'  => $this->config->item('basedn', 'ldap'),
-          ];
+        ];
         log_message('debug', 'LDAP Auth: Connect to ' . $ldaphost);
         $ldapconfig['authrealm'] = $this->config->item('domain', 'ldap');
         // connect to ldap server

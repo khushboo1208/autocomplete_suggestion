@@ -29,9 +29,9 @@ $(document).ready(function () {
             $('#places_list').html('<h3>Location</h3>');
 
             $.ajax({
-                url: '/welcome',
-                type: 'POST',
-                data : {'string' : input},
+                url: '/api/v1/search/hotelList?string='+input,
+                type: 'GET',
+
                 success: function(response){
 
                     if(response['success']) {
